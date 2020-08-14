@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespance:当前XML文件对应的接口 -->
+<mapper namespace="com.cl.core.mapper.BaseDictMapper">
+
+    <!-- public List<BaseDict> selectByDictId(String dictTypeCode); -->
+    <select id="selectByDictId" parameterType="String" resultType="basedict">
+        SELECT
+          *
+        FROM
+          base_dict
+        WHERE
+          dict_type_code=#{dictTypeCode}
+    </select>
+
+</mapper>

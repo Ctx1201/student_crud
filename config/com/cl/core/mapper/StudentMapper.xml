@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespance:当前XML文件对应的接口 -->
+<mapper namespace="com.cl.core.mapper.StudentMapper">
+
+   <!-- public List<Student> selectStudentList(Student student);-->
+    <select id="selectStudentList" parameterType="student" resultType="student">
+        SELECT
+            stu_id,
+            stu_name,
+            stu_age,
+            stu_gender,
+            b.dict_item_name stu_faculty,
+            c.dict_item_name stu_profession,
+            d.dict_item_name stu_class,
+            stu_number,
+            stu_mobile,
+            stu_address,
+            stu_createtime
+        FROM
+          student a
+        LEFT JOIN (
+          SELECT
+            dict_id,
+            dict_item_name
+          FROM
+            base_dict
+          WHERE
+            dict_type_code = '002'
+        ) b ON a.stu_faculty = b.dict_id
+        LEFT JOIN (
+          SELECT
+            dict_id,
+            dict_item_name
+          FROM
+            base_dict
+          WHERE
+            dict_type_code = '001'
+        ) c ON a.stu_profession = c.dict_id
+        LEFT JOIN (
+          SELECT
+            dict_id,
+            dict_item_name
+          FROM
+            base_dict
+          WHERE
+            dict_type_code = '006'
+        ) d ON a.stu_class = d.dict_id
+        <where>
+            <if test="stu_name !=null ">
+                stu_name LIKE "%"#{stu_name}"%"
+            </if>
+            <if test="stu_faculty !=null and stu_faculty !='' ">
+                AND  stu_faculty= #{stu_faculty}
+            </if>
+
+            <if test="stu_profession !=null and stu_profession !='' ">
+                AND  stu_profession= #{stu_profession}
+            </if>
+
+            <if test="stu_class !=null and stu_class !='' ">
+                AND  stu_class= #{stu_class}
+            </if>
+        </where>
+        <if test="start !=null and rows !=null ">
+            limit #{start},#{rows}
+        </if>
+    </select>
+
+    <!--public Integer  selectStudentListCount(Student student);-->
+    <select id="selectStudentListCount" parameterType="student" resultType="Integer">
+
+        SELECT
+          count(*)
+        FROM
+          student
+        <where>
+            <if test="stu_name!=null">
+                stu_name LIKE "%"#{stu_name}"%"
+            </if>
+            <if test="stu_faculty!=null">
+                AND  stu_faculty=#{stu_faculty}
+            </if>
+
+            <if test="stu_profession!=null">
+                AND  stu_profession=#{stu_profession}
+            </if>
+
+            <if test="stu_class!=null">
+                AND  stu_class=#{stu_class}
+            </if>
+        </where>
+    </select>
+
+    <!-- public  Student  selectStudentByStudentNumber(String studentNumber);-->
+
+    <select id="selectStudentByStudentNumber" parameterType="String" resultType="student">
+        SELECT
+          *
+        FROM
+          student
+        WHERE
+          stu_number=#{studentNumber}
+    </select>
+
+    <!-- public Integer  creatStudent(Student student); -->
+    <insert id="creatStudent" parameterType="student">
+        INSERT INTO
+          student(
+          stu_id,
+          stu_name,
+          stu_age,
+          stu_gender,
+          stu_faculty,
+          stu_profession,
+          stu_class,
+          stu_number,
+          stu_mobile,
+          stu_address,
+          stu_createtime
+        )VALUES(
+          #{stu_id},#{stu_name},#{stu_age},#{stu_gender},
+          #{stu_faculty},#{stu_profession},#{stu_class},#{stu_number},
+          #{stu_mobile},#{stu_address},#{stu_createtime}
+        )
+
+
+    </insert>
+
+    <!--  public  Student selectStudentById(String  id); -->
+
+    <select id="selectStudentById" parameterType="Integer" resultType="student">
+        SELECT
+        *
+        FROM
+        student
+        WHERE
+        stu_id=#{id}
+    </select>
+
+    <!--  public  Integer updateStudent(Student student); -->
+    <update id="updateStudent" parameterType="student">
+        UPDATE
+          student
+        SET
+          stu_name=#{stu_name},
+          stu_faculty=#{stu_faculty},
+          stu_profession=#{stu_profession},
+          stu_class=#{stu_class},
+          stu_number=#{stu_number},
+          stu_mobile=#{stu_mobile},
+          stu_address=#{stu_address}
+        WHERE
+          stu_id=#{stu_id}
+    </update>
+
+    <!--  public  Integer deleteStudent(Integer id); -->
+    <delete id="deleteStudent" parameterType="Integer">
+        DELETE FROM
+          student
+        WHERE
+          stu_id=#{stu_id}
+    </delete>
+</mapper>

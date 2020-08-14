@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- namespance:当前XML文件对应的接口 -->
+<mapper namespace="com.cl.core.mapper.UserMapper">
+
+    <!-- public  User  cheakLogin(String usercode,String password);-->
+    <select id="cheakLogin" parameterType="String" resultType="User">
+          SELECT
+            *
+          FROM
+             sys_user
+          <where>
+              user_code=#{usercode}
+              AND
+              user_password=#{password}
+          </where>
+    </select>
+
+</mapper>
